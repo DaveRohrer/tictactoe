@@ -1,3 +1,4 @@
+const { board } = require("./assets");
 const {
   updateView,
   updateSelectorCharacterIndex,
@@ -85,7 +86,7 @@ const moveSelector = (desiredDirection) => {
 const placeLetter = () => {
   if (
     boardState[selectorPosition.y][selectorPosition.x] === "blank" &&
-    checkForWinner() === "no winner"
+    checkForWinner() === "no winner yet"
   ) {
     boardState[selectorPosition.y][
       selectorPosition.x
@@ -139,28 +140,41 @@ const checkForWinner = () => {
   ) {
     return boardState[1][1];
   }
-  return "no winner";
+  return hasOpenSpace() ? "no winner yet" : "draw game";
 };
 
 // This method returns whatever message should be displayed above the board
 const topMessage = (playersTurn) => {
-  if (checkForWinner() === "no winner") {
-    if (!hasOpenSpace()) {
-      return `Draw Game!`;
-    } else {
+  switch (checkForWinner()) {
+    case "no winner yet":
       return `Player ${playersTurn}'s Turn`;
-    }
-  } else {
-    return `Player ${checkForWinner().toUpperCase()} Wins!`;
+    case "draw game":
+      return `Draw Game!`;
+    default:
+      return `Player ${checkForWinner().toUpperCase()} Wins!`;
   }
+
+  // if (checkForWinner() === "no winner yet") {
+  //   return `Player ${playersTurn}'s Turn`;
+  // } else if (checkForWinner() === "draw game") {
+  //   return `Draw Game!`;
+  // } else {
+  //   return `Player ${checkForWinner().toUpperCase()} Wins!`;
+  // }
 };
 
+const setBoard = (desiredBoardState) => {
+  boardState = desiredBoardState;
+};
 module.exports = {
   moveSelector,
   initializeModel,
   placeLetter,
   resetModel,
+  // testing exports. I put them under this comment until I learn more about how to properly
+  // handle encapsulation when doing jest testing.
+  setBoard,
+  checkForWinner,
 };
 // testing exports. I put them on a separate line until I learn more about how to properly
 // handle encapsulation when doing jest testing.
-//module.exports = { checkForWinner };
