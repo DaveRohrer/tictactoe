@@ -153,19 +153,12 @@ const topMessage = (playersTurn) => {
     default:
       return `Player ${checkForWinner().toUpperCase()} Wins!`;
   }
-
-  // if (checkForWinner() === "no winner yet") {
-  //   return `Player ${playersTurn}'s Turn`;
-  // } else if (checkForWinner() === "draw game") {
-  //   return `Draw Game!`;
-  // } else {
-  //   return `Player ${checkForWinner().toUpperCase()} Wins!`;
-  // }
 };
 
 const setBoard = (desiredBoardState) => {
   boardState = desiredBoardState;
 };
+
 module.exports = {
   moveSelector,
   initializeModel,
