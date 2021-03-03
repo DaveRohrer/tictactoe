@@ -12,12 +12,14 @@ let selectorTicTimeout;
 let playersTurn;
 
 // Model init function
-const initializeModel = () => {
+const initializeModel = (presentToView = true) => {
   resetBoardState();
   resetSelectorPosition();
   selectorTicTimeout = setSelectorInterval();
   playersTurn = "X";
-  updateView(boardState, selectorPosition, topMessage(playersTurn));
+  if (presentToView) {
+    updateView(boardState, selectorPosition, topMessage(playersTurn));
+  }
 };
 
 // Resetting methods
@@ -83,7 +85,7 @@ const moveSelector = (desiredDirection) => {
   updateView(boardState, selectorPosition, topMessage(playersTurn));
 };
 
-const placeLetter = () => {
+const placeLetter = (presentToView = true) => {
   if (
     boardState[selectorPosition.y][selectorPosition.x] === "blank" &&
     checkForWinner() === "no winner yet"
@@ -93,7 +95,9 @@ const placeLetter = () => {
     ] = playersTurn.toLowerCase();
     flipTurn();
   }
-  updateView(boardState, selectorPosition, topMessage(playersTurn));
+  if (presentToView) {
+    updateView(boardState, selectorPosition, topMessage(playersTurn));
+  }
 };
 
 //TODO consider changing this code to get the correct player turn just from the number of
@@ -155,8 +159,16 @@ const topMessage = (playersTurn) => {
   }
 };
 
+// Setter functions currently used for testing
 const setBoard = (desiredBoardState) => {
   boardState = desiredBoardState;
+};
+const getBoardState = () => {
+  return boardState;
+};
+const setSelectorPosition = (y, x) => {
+  selectorPosition.y = y;
+  selectorPosition.x = x;
 };
 
 module.exports = {
@@ -164,10 +176,11 @@ module.exports = {
   initializeModel,
   placeLetter,
   resetModel,
-  // testing exports. I put them under this comment until I learn more about how to properly
-  // handle encapsulation when doing jest testing.
+  // I put the functions I am exporting for testing under this comment until I learn more
+  // about how to properly handle encapsulation when doing jest testing.
   setBoard,
   checkForWinner,
+  getBoardState,
+  setSelectorPosition,
+  placeLetter,
 };
-// testing exports. I put them on a separate line until I learn more about how to properly
-// handle encapsulation when doing jest testing.

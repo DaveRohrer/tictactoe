@@ -1,4 +1,12 @@
-const { setBoard, checkForWinner } = require("./model");
+const {
+  initializeModel,
+  setBoard,
+  checkForWinner,
+  getBoardState,
+  setSelectorPosition,
+  placeLetter,
+} = require("./model");
+
 describe("checkForWinner", () => {
   it("returns 'x' when x occupies 3 sequental horizontal spaces in the first row", () => {
     setBoard([
@@ -159,5 +167,139 @@ describe("checkForWinner", () => {
       ["x", "o", "o"],
     ]);
     expect(checkForWinner()).toEqual("x");
+  });
+});
+
+describe("placeLetter()", () => {
+  it("places an 'x' in the correct location of the boardState", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["blank", "blank", "blank"],
+      ["x", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("places an 'o' in the correct location of the boardState after previously placing an x", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["blank", "blank", "blank"],
+      ["x", "o", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    setSelectorPosition(1, 1);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("places an 'x' in the correct location of the boardState after previously placing an o", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["blank", "blank", "blank"],
+      ["x", "o", "x"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    setSelectorPosition(1, 1);
+    placeLetter(false);
+    setSelectorPosition(1, 2);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("places an 'o' in the correct location of the boardState after previously placing multiple xs", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["o", "blank", "blank"],
+      ["x", "o", "x"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    setSelectorPosition(1, 1);
+    placeLetter(false);
+    setSelectorPosition(1, 2);
+    placeLetter(false);
+    setSelectorPosition(0, 0);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("does not insert a letter into the board state if a letter currently occupies the selector location", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["blank", "blank", "blank"],
+      ["x", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("does not skip turns after an attempt to insert a letter into an occupied location", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["blank", "blank", "blank"],
+      ["x", "o", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    placeLetter(false);
+    setSelectorPosition(1, 1);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
+  });
+  it("does not allow boardState changes after a winner has been found", () => {
+    // arrange
+    initializeModel(false);
+    const resultBoard = [
+      ["x", "blank", "blank"],
+      ["x", "o", "o"],
+      ["x", "blank", "blank"],
+    ];
+    //act
+    setSelectorPosition(0, 0);
+    placeLetter(false);
+    setSelectorPosition(1, 1);
+    placeLetter(false);
+    setSelectorPosition(1, 0);
+    placeLetter(false);
+    setSelectorPosition(1, 2);
+    placeLetter(false);
+    setSelectorPosition(2, 0);
+    placeLetter(false);
+    setSelectorPosition(0, 1);
+    placeLetter(false);
+
+    //assert
+    expect(getBoardState()).toEqual(resultBoard);
   });
 });
