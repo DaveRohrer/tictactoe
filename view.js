@@ -165,6 +165,11 @@ const updateView = (boardState, selectorPosition, topMessage) => {
   console.log(insertBottomMenu(boardStateDisplayString));
 };
 
+// Functions below this line are used for testing
+const setSelectorCharacterIndex = (index) => {
+  selectorCharacterIndex = index;
+};
+
 module.exports = {
   updateView,
   updateSelectorCharacterIndex,
@@ -178,4 +183,5 @@ module.exports = {
   insertSelectBoarder,
   insertBoardState,
   insertTopMessage,
+  setSelectorCharacterIndex,
 };
