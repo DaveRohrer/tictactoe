@@ -4,7 +4,6 @@ const {
   insertLetter,
   insertSelectBoarder,
   insertBoardState,
-  insertTopMessage,
   setSelectorCharacterIndex,
 } = require("./view");
 
@@ -51,6 +50,7 @@ describe("insertLetter()", () => {
     );
     expect(boardWithXInserts).toEqual(resultString);
   });
+
   it("can place ascii art xs in the middle row correctly", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -93,6 +93,7 @@ describe("insertLetter()", () => {
     );
     expect(boardWithXInserts).toEqual(resultString);
   });
+
   it("can place ascii art xs in the top row correctly", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -135,6 +136,7 @@ describe("insertLetter()", () => {
     );
     expect(boardWithXInserts).toEqual(resultString);
   });
+
   it("can place ascii art os in the bottom row correctly", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -178,7 +180,8 @@ describe("insertLetter()", () => {
     );
     expect(boardWithOInserts).toEqual(resultString);
   });
-  it("can place an ascii art os in the middle row correctly", () => {
+
+  it("can place ascii art os in the middle row correctly", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -220,6 +223,7 @@ describe("insertLetter()", () => {
     );
     expect(boardWithOInserts).toEqual(resultString);
   });
+
   it("can place ascii art os in the top row correctly", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -265,7 +269,7 @@ describe("insertLetter()", () => {
 });
 
 describe("insertSelectBoarder()", () => {
-  it("draws the bright part of the flashing selection indicator correctly in the bottom row", () => {
+  it("inserts the bright part of the flashing selection indicator correctly in the bottom row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -308,7 +312,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithBrightSelector).toEqual(resultString);
   });
 
-  it("draws the bright part of the flashing selection indicator correctly in the middle row", () => {
+  it("inserts the bright part of the flashing selection indicator correctly in the middle row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -351,7 +355,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithBrightSelector).toEqual(resultString);
   });
 
-  it("draws the bright part of the flashing selection indicator correctly in the top row", () => {
+  it("inserts the bright part of the flashing selection indicator correctly in the top row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║▒▒▒▒▒▒▒▒▒▒║▒▒▒▒▒▒▒▒▒▒║▒▒▒▒▒▒▒▒▒▒║
 ║▒▒▒▒▒▒▒▒▒▒║▒▒▒▒▒▒▒▒▒▒║▒▒▒▒▒▒▒▒▒▒║
@@ -393,7 +397,8 @@ describe("insertSelectBoarder()", () => {
     });
     expect(boardWithBrightSelector).toEqual(resultString);
   });
-  it("draws the dark part of the flashing selection indicator correctly in the bottom row", () => {
+
+  it("inserts the dark part of the flashing selection indicator correctly in the bottom row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -436,7 +441,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithDarkSelector).toEqual(resultString);
   });
 
-  it("draws the dark part of the flashing selection indicator correctly in the middle row", () => {
+  it("inserts the dark part of the flashing selection indicator correctly in the middle row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
 ║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
@@ -479,7 +484,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithDarkSelector).toEqual(resultString);
   });
 
-  it("draws the dark part of the flashing selection indicator correctly in the top row", () => {
+  it("inserts the dark part of the flashing selection indicator correctly in the top row", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║          ║          ║          ║
 ║          ║          ║          ║
@@ -522,7 +527,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithDarkSelector).toEqual(resultString);
   });
 
-  it("draws the bright part of the flashing selection indicator correctly behind letters", () => {
+  it("inserts the bright part of the flashing selection indicator correctly behind letters", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║▒▒▒▒▒▒▒▒▒▒║
 ║░░░░░░░░░░║░░░░░░░░░░║▒▒█████╗▒▒║
@@ -564,7 +569,7 @@ describe("insertSelectBoarder()", () => {
     expect(boardWithBrightSelectorBehindLetter).toEqual(resultString);
   });
 
-  it("draws the dark part of the flashing selection indicator correctly behind letters", () => {
+  it("inserts the dark part of the flashing selection indicator correctly behind letters", () => {
     const resultString = `╔══════════╦══════════╦══════════╗
 ║░░░░░░░░░░║░░░░░░░░░░║          ║
 ║░░░░░░░░░░║░░░░░░░░░░║  █████╗  ║
@@ -604,5 +609,48 @@ describe("insertSelectBoarder()", () => {
       { x: 2, y: 0 }
     );
     expect(boardWithDarkSelectorBehindLetter).toEqual(resultString);
+  });
+});
+
+describe("insertBoardState()", () => {
+  it("insters letters in the correct positions given an array with letter placement information", () => {
+    const resultString = `╔══════════╦══════════╦══════════╗
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+║░░░░░░░░░░║░░░░░░░░░░║░░█████╗░░║
+║░░░░░░░░░░║░░░░░░░░░░║░██╔══██╗░║
+║░░░░░░░░░░║░░░░░░░░░░║░██║░░██║░║
+║░░░░░░░░░░║░░░░░░░░░░║░██║░░██║░║
+║░░░░░░░░░░║░░░░░░░░░░║░╚█████╔╝░║
+║░░░░░░░░░░║░░░░░░░░░░║░░╚════╝░░║
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+╠══════════╬══════════╬══════════╣
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+║░██╗░░██╗░║░██╗░░██╗░║░░░░░░░░░░║
+║░╚██╗██╔╝░║░╚██╗██╔╝░║░░░░░░░░░░║
+║░░╚███╔╝░░║░░╚███╔╝░░║░░░░░░░░░░║
+║░░██╔██╗░░║░░██╔██╗░░║░░░░░░░░░░║
+║░██╔╝╚██╗░║░██╔╝╚██╗░║░░░░░░░░░░║
+║░╚═╝░░╚═╝░║░╚═╝░░╚═╝░║░░░░░░░░░░║
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+╠══════════╬══════════╬══════════╣
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+║░░█████╗░░║░░█████╗░░║░██╗░░██╗░║
+║░██╔══██╗░║░██╔══██╗░║░╚██╗██╔╝░║
+║░██║░░██║░║░██║░░██║░║░░╚███╔╝░░║
+║░██║░░██║░║░██║░░██║░║░░██╔██╗░░║
+║░╚█████╔╝░║░╚█████╔╝░║░██╔╝╚██╗░║
+║░░╚════╝░░║░░╚════╝░░║░╚═╝░░╚═╝░║
+║░░░░░░░░░░║░░░░░░░░░░║░░░░░░░░░░║
+╚══════════╩══════════╩══════════╝`;
+
+    const boardState = insertBoardState(
+      [
+        ["blank", "blank", "o"],
+        ["x", "x", "blank"],
+        ["o", "o", "x"],
+      ],
+      board
+    );
+    expect(boardState).toEqual(resultString);
   });
 });

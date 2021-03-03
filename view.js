@@ -182,6 +182,5 @@ module.exports = {
   insertLetter,
   insertSelectBoarder,
   insertBoardState,
-  insertTopMessage,
   setSelectorCharacterIndex,
 };
