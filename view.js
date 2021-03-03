@@ -170,4 +170,12 @@ module.exports = {
   updateSelectorCharacterIndex,
   resetSelectorCharacter,
   initializeView,
+  // I put the functions I am exporting for testing under this comment until I learn more
+  // about how to properly handle encapsulation when doing jest testing.
+  board,
+  letters,
+  insertLetter,
+  insertSelectBoarder,
+  insertBoardState,
+  insertTopMessage,
 };
