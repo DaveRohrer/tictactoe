@@ -1,3 +1,4 @@
+const { board } = require("./assets");
 const {
   updateView,
   updateSelectorCharacterIndex,
@@ -11,12 +12,14 @@ let selectorTicTimeout;
 let playersTurn;
 
 // Model init function
-const initializeModel = () => {
+const initializeModel = (presentToView = true) => {
   resetBoardState();
   resetSelectorPosition();
   selectorTicTimeout = setSelectorInterval();
   playersTurn = "X";
-  updateView(boardState, selectorPosition, topMessage(playersTurn));
+  if (presentToView) {
+    updateView(boardState, selectorPosition, topMessage(playersTurn));
+  }
 };
 
 // Resetting methods
@@ -44,15 +47,16 @@ const resetSelectorBlink = () => {
   resetSelectorCharacter();
 };
 
+// Timer functions for the selector blinking speed
 const selectorTic = () => {
   updateSelectorCharacterIndex();
   updateView(boardState, selectorPosition, topMessage(playersTurn));
 };
-
 const setSelectorInterval = () => {
   return setInterval(selectorTic, 700);
 };
 
+// Input handler functions
 const moveSelector = (desiredDirection) => {
   switch (desiredDirection) {
     case "right":
@@ -81,18 +85,19 @@ const moveSelector = (desiredDirection) => {
   resetSelectorBlink();
   updateView(boardState, selectorPosition, topMessage(playersTurn));
 };
-
-const placeLetter = () => {
+const placeLetter = (presentToView = true) => {
   if (
     boardState[selectorPosition.y][selectorPosition.x] === "blank" &&
-    checkForWinner() === "no winner"
+    checkForWinner() === "no winner yet"
   ) {
     boardState[selectorPosition.y][
       selectorPosition.x
     ] = playersTurn.toLowerCase();
     flipTurn();
   }
-  updateView(boardState, selectorPosition, topMessage(playersTurn));
+  if (presentToView) {
+    updateView(boardState, selectorPosition, topMessage(playersTurn));
+  }
 };
 
 //TODO consider changing this code to get the correct player turn just from the number of
@@ -139,20 +144,31 @@ const checkForWinner = () => {
   ) {
     return boardState[1][1];
   }
-  return "no winner";
+  return hasOpenSpace() ? "no winner yet" : "draw game";
 };
 
 // This method returns whatever message should be displayed above the board
 const topMessage = (playersTurn) => {
-  if (checkForWinner() === "no winner") {
-    if (!hasOpenSpace()) {
-      return `Draw Game!`;
-    } else {
+  switch (checkForWinner()) {
+    case "no winner yet":
       return `Player ${playersTurn}'s Turn`;
-    }
-  } else {
-    return `Player ${checkForWinner().toUpperCase()} Wins!`;
+    case "draw game":
+      return `Draw Game!`;
+    default:
+      return `Player ${checkForWinner().toUpperCase()} Wins!`;
   }
+};
+
+// Setter/getter functions currently used for testing
+const setBoard = (desiredBoardState) => {
+  boardState = desiredBoardState;
+};
+const getBoardState = () => {
+  return boardState;
+};
+const setSelectorPosition = (y, x) => {
+  selectorPosition.y = y;
+  selectorPosition.x = x;
 };
 
 module.exports = {
@@ -160,7 +176,11 @@ module.exports = {
   initializeModel,
   placeLetter,
   resetModel,
+  // I put the functions I am exporting for testing under this comment until I learn more
+  // about how to properly handle encapsulation when doing jest testing.
+  setBoard,
+  checkForWinner,
+  getBoardState,
+  setSelectorPosition,
+  placeLetter,
 };
-// testing exports. I put them on a separate line until I learn more about how to properly
-// handle encapsulation when doing jest testing.
-//module.exports = { checkForWinner };

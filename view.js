@@ -165,9 +165,22 @@ const updateView = (boardState, selectorPosition, topMessage) => {
   console.log(insertBottomMenu(boardStateDisplayString));
 };
 
+// Functions below this line are used for testing
+const setSelectorCharacterIndex = (index) => {
+  selectorCharacterIndex = index;
+};
+
 module.exports = {
   updateView,
   updateSelectorCharacterIndex,
   resetSelectorCharacter,
   initializeView,
+  // I put the functions I am exporting for testing under this comment until I learn more
+  // about how to properly handle encapsulation when doing jest testing.
+  board,
+  letters,
+  insertLetter,
+  insertSelectBoarder,
+  insertBoardState,
+  setSelectorCharacterIndex,
 };
