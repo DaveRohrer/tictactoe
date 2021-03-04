@@ -47,15 +47,16 @@ const resetSelectorBlink = () => {
   resetSelectorCharacter();
 };
 
+// Timer functions for the selector blinking speed
 const selectorTic = () => {
   updateSelectorCharacterIndex();
   updateView(boardState, selectorPosition, topMessage(playersTurn));
 };
-
 const setSelectorInterval = () => {
   return setInterval(selectorTic, 700);
 };
 
+// Input handler functions
 const moveSelector = (desiredDirection) => {
   switch (desiredDirection) {
     case "right":
@@ -84,7 +85,6 @@ const moveSelector = (desiredDirection) => {
   resetSelectorBlink();
   updateView(boardState, selectorPosition, topMessage(playersTurn));
 };
-
 const placeLetter = (presentToView = true) => {
   if (
     boardState[selectorPosition.y][selectorPosition.x] === "blank" &&
@@ -159,7 +159,7 @@ const topMessage = (playersTurn) => {
   }
 };
 
-// Setter functions currently used for testing
+// Setter/getter functions currently used for testing
 const setBoard = (desiredBoardState) => {
   boardState = desiredBoardState;
 };
