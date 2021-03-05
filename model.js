@@ -1,3 +1,9 @@
+const {
+  updateView,
+  updateSelectorCharacterIndex,
+  resetSelectorCharacter,
+} = require("./view");
+
 //board state
 
 const blankBoardState = {
@@ -10,6 +16,15 @@ const blankBoardState = {
 };
 
 const boardStates = [blankBoardState];
+
+//functions
+//isWinner()
+//deepCopyBoardState()
+//getTopMessage
+//newBoardState
+
+//
+//
 
 /*
 create new board state (
@@ -32,16 +47,21 @@ create new board state (
 // let selectorTicTimeout;
 // let playersTurn;
 
-// // Model init function
-// const initializeModel = (presentToView = true) => {
-//   resetBoardState();
-//   resetSelectorPosition();
-//   selectorTicTimeout = setSelectorInterval();
-//   playersTurn = "X";
-//   if (presentToView) {
-//     updateView(boardState, selectorPosition, topMessage(playersTurn));
-//   }
-// };
+// Model init function
+const initializeModel = (presentToView = true) => {
+  // resetBoardState();
+  // resetSelectorPosition();
+  // selectorTicTimeout = setSelectorInterval();
+  // playersTurn = "X";
+  // if (presentToView) {
+  //   updateView(boardState, selectorPosition, topMessage(playersTurn));
+  // }
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    "lets party for real"
+  );
+};
 
 // // Resetting methods
 // const resetModel = () => {
@@ -192,16 +212,16 @@ create new board state (
 //   selectorPosition.x = x;
 // };
 
-// module.exports = {
-//   moveSelector,
-//   initializeModel,
-//   placeLetter,
-//   resetModel,
-//   // I put the functions I am exporting for testing under this comment until I learn more
-//   // about how to properly handle encapsulation when doing jest testing.
-//   setBoard,
-//   checkForWinner,
-//   getBoardState,
-//   setSelectorPosition,
-//   placeLetter,
-// };
+module.exports = {
+  //   moveSelector,
+  initializeModel,
+  //   placeLetter,
+  //   resetModel,
+  //   // I put the functions I am exporting for testing under this comment until I learn more
+  //   // about how to properly handle encapsulation when doing jest testing.
+  //   setBoard,
+  //   checkForWinner,
+  //   getBoardState,
+  //   setSelectorPosition,
+  //   placeLetter,
+};
