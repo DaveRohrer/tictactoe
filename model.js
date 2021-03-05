@@ -6,16 +6,60 @@ const {
 
 //board state
 
-const blankBoardState = {
-  board: [
-    ["blank", "blank", "blank"],
-    ["blank", "blank", "blank"],
-    ["blank", "blank", "blank"],
-  ],
-  selectorPos: { x: 0, y: 0 },
+const deepCopyBoardState = (boardState) => {
+  return {
+    board: [
+      [boardState.board[0][0], boardState.board[0][1], boardState.board[0][2]],
+      [boardState.board[1][0], boardState.board[1][1], boardState.board[1][2]],
+      [boardState.board[2][0], boardState.board[2][1], boardState.board[2][2]],
+    ],
+    selectorPos: { x: boardState.selectorPos.x, y: boardState.selectorPos.y },
+  };
 };
 
-const boardStates = [blankBoardState];
+const clearBoardState = () => {
+  return {
+    board: [
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ],
+    selectorPos: { x: 0, y: 0 },
+  };
+};
+
+const boardStates = [clearBoardState()];
+//const hasWinner(boardState){
+
+//}
+
+const hasHorizontalWinner = (boardState) => {
+  return boardState.board.reduce((acc, row) => {
+    return (
+      row.every((element) => {
+        return element == "x";
+      }) ||
+      row.every((element) => {
+        return element == "o";
+      }) ||
+      acc
+    );
+  }, false);
+};
+
+const getHorizontalWinner = (boardState) => {
+  return boardState.board.reduce((acc, row) => {
+    return row.every((element) => {
+      return element == "x";
+    })
+      ? "x"
+      : row.every((element) => {
+          return element == "o";
+        })
+      ? "o"
+      : acc;
+  }, "none");
+};
 
 //functions
 //isWinner()
@@ -217,6 +261,8 @@ module.exports = {
   initializeModel,
   //   placeLetter,
   //   resetModel,
+  hasHorizontalWinner,
+  getHorizontalWinner,
   //   // I put the functions I am exporting for testing under this comment until I learn more
   //   // about how to properly handle encapsulation when doing jest testing.
   //   setBoard,

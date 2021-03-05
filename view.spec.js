@@ -7,6 +7,10 @@
 //   setSelectorCharacterIndex,
 // } = require("./view");
 
+test("temp", () => {
+  expect(1).toEqual(1);
+});
+
 // describe("insertLetter()", () => {
 //   it("can place ascii art xs in the bottom row correctly", () => {
 //     const resultString = `╔══════════╦══════════╦══════════╗

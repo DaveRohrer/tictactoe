@@ -1,4 +1,170 @@
-// const {
+const { hasHorizontalWinner, getHorizontalWinner } = require("./model");
+
+describe("hasHorizontalWinner", () => {
+  it("returns false when the board is blank", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(false);
+  });
+  it("returns false when the board is has two x and two o placements", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "blank"],
+        ["blank", "blank", "blank"],
+        ["o", "o", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(false);
+  });
+  it("returns true when there are 3 xs in the top row", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "x"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+  it("returns true when there are 3 xs in the middle row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["x", "x", "x"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+  it("returns true when there are 3 xs in the bottom row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["x", "x", "x"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+  it("returns true when there are 3 os in the top row", () => {
+    const boardState = {
+      board: [
+        ["o", "o", "o"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+  it("returns true when there are 3 os in the middle row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["o", "o", "o"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+  it("returns true when there are 3 xs in the bottom row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["o", "o", "o"],
+      ],
+    };
+    expect(hasHorizontalWinner(boardState)).toEqual(true);
+  });
+});
+describe("getHorizontalWinner", () => {
+  it("returns 'none' when the board is blank", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("none");
+  });
+  it("returns 'none' when the board is has two x and two o placements", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "blank"],
+        ["blank", "blank", "blank"],
+        ["o", "o", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("none");
+  });
+  it("returns 'x' when there are 3 xs in the top row", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "x"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("x");
+  });
+  it("returns 'x' when there are 3 xs in the middle row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["x", "x", "x"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("x");
+  });
+  it("returns 'x' when there are 3 xs in the bottom row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["x", "x", "x"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("x");
+  });
+  it("returns 'o' when there are 3 os in the top row", () => {
+    const boardState = {
+      board: [
+        ["o", "o", "o"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("o");
+  });
+  it("returns 'o' when there are 3 os in the middle row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["o", "o", "o"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("o");
+  });
+  it("returns 'o' when there are 3 xs in the bottom row", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["o", "o", "o"],
+      ],
+    };
+    expect(getHorizontalWinner(boardState)).toEqual("o");
+  });
+});
+
 //   initializeModel,
 //   setBoard,
 //   checkForWinner,
