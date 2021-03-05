@@ -29,26 +29,9 @@ const clearBoardState = () => {
 };
 
 const boardStates = [clearBoardState()];
-//const hasWinner(boardState){
 
-//}
-
-const hasHorizontalWinner = (boardState) => {
-  return boardState.board.reduce((acc, row) => {
-    return (
-      row.every((element) => {
-        return element == "x";
-      }) ||
-      row.every((element) => {
-        return element == "o";
-      }) ||
-      acc
-    );
-  }, false);
-};
-
-const getHorizontalWinner = (boardState) => {
-  return boardState.board.reduce((acc, row) => {
+const getWinnerFromRows = (rowArray) => {
+  return rowArray.reduce((acc, row) => {
     return row.every((element) => {
       return element == "x";
     })
@@ -60,6 +43,52 @@ const getHorizontalWinner = (boardState) => {
       : acc;
   }, "none");
 };
+
+const getHorizontalWinner = (boardState) => {
+  return getWinnerFromRows(boardState.board);
+};
+
+const getVerticalWinner = (boardState) => {
+  return getWinnerFromRows(transformColumnsToRows(boardState.board));
+};
+
+const getDiagonalWinner = (boardState) => {
+  return getWinnerFromRows(transformDiagnalIndiciesToRows(boardState.board));
+};
+
+const getWinner = (boardState) => {
+  return [
+    getHorizontalWinner(boardState),
+    getVerticalWinner(boardState),
+    getDiagonalWinner(boardState),
+  ].reduce((acc, element) => {
+    return element != "none" ? element : acc;
+  }, "none");
+};
+
+const transformColumnsToRows = (board) => {
+  return [
+    [board[0][0], board[1][0], board[2][0]],
+    [board[0][1], board[1][1], board[2][1]],
+    [board[0][2], board[1][2], board[2][2]],
+  ];
+};
+
+const transformDiagnalIndiciesToRows = (board) => {
+  return [
+    [board[0][0], board[1][1], board[2][2]],
+    [board[0][2], board[1][1], board[2][0]],
+  ];
+};
+
+// const boardState = {
+//   board: [
+//     ["blank", "x", "blank"],
+//     ["x", "x", "blank"],
+//     ["o", "o", "o"],
+//   ],
+// };
+// console.log(getWinner(boardState));
 
 //functions
 //isWinner()
@@ -261,8 +290,10 @@ module.exports = {
   initializeModel,
   //   placeLetter,
   //   resetModel,
-  hasHorizontalWinner,
   getHorizontalWinner,
+  getVerticalWinner,
+  getDiagonalWinner,
+  getWinner,
   //   // I put the functions I am exporting for testing under this comment until I learn more
   //   // about how to properly handle encapsulation when doing jest testing.
   //   setBoard,
