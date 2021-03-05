@@ -3,6 +3,10 @@ const {
   getVerticalWinner,
   getDiagonalWinner,
   getWinner,
+  getTurn,
+  hasEmptySpaces,
+  isDraw,
+  getTopMessage,
 } = require("./model");
 
 describe("getHorizontalWinner", () => {
@@ -220,7 +224,7 @@ describe("getWinner", () => {
         ["o", "x", "x"],
       ],
     };
-    expect(getDiagonalWinner(boardState)).toEqual("x");
+    expect(getWinner(boardState)).toEqual("x");
   });
   it("returns 'o' when the board is not full and there are 3 os in a row from top right to bottom left", () => {
     const boardState = {
@@ -241,6 +245,164 @@ describe("getWinner", () => {
       ],
     };
     expect(getWinner(boardState)).toEqual("o");
+  });
+  it("returns 'x' when the board  is full and there are 3 xs in a column", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "blank"],
+        ["x", "o", "blank"],
+        ["x", "o", "o"],
+      ],
+    };
+    expect(getWinner(boardState)).toEqual("x");
+  });
+});
+describe("getTurn", () => {
+  it("returns 'x' when the board is empty", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getTurn(boardState)).toEqual("x");
+  });
+  it("returns 'o' when there is one x on the board", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "x", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getTurn(boardState)).toEqual("o");
+  });
+  it("returns 'x' when there is one x and one o on the board", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "x", "o"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(getTurn(boardState)).toEqual("x");
+  });
+  it("returns 'o' when there is one more x than o on the board", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "x", "o"],
+        ["o", "x", "o"],
+      ],
+    };
+    expect(getTurn(boardState)).toEqual("o");
+  });
+});
+describe("hasEmptySpaces", () => {
+  it("returns true when the board is empty", () => {
+    const boardState = {
+      board: [
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+        ["blank", "blank", "blank"],
+      ],
+    };
+    expect(hasEmptySpaces(boardState)).toEqual(true);
+  });
+  it("returns true when the board is nearly full", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "o"],
+        ["o", "x", "blank"],
+        ["x", "o", "o"],
+      ],
+    };
+    expect(hasEmptySpaces(boardState)).toEqual(true);
+  });
+  it("returns false when the board is full", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "o"],
+        ["o", "x", "x"],
+        ["x", "o", "o"],
+      ],
+    };
+    expect(hasEmptySpaces(boardState)).toEqual(false);
+  });
+});
+describe("isDraw", () => {
+  it("returns false when there are empty spaces left with no winner", () => {
+    const boardState = {
+      board: [
+        ["x", "blank", "x"],
+        ["blank", "o", "blank"],
+        ["blank", "o", "blank"],
+      ],
+    };
+    expect(isDraw(boardState)).toEqual(false);
+  });
+  it("returns true when there are no empty spaces left with no winner", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+    };
+    expect(isDraw(boardState)).toEqual(true);
+  });
+  it("returns false when there are no empty spaces left with a winner", () => {
+    const boardState = {
+      board: [
+        ["x", "x", "x"],
+        ["x", "o", "o"],
+        ["o", "o", "x"],
+      ],
+    };
+    expect(isDraw(boardState)).toEqual(false);
+  });
+});
+describe("getTopMessage", () => {
+  it("returns Draw Game! when the game is a draw", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+    };
+    expect(getTopMessage(boardState)).toEqual("Draw Game!");
+  });
+  it("returns Player X's Turn when the game has no winner and has open spaces when it is x's turn", () => {
+    const boardState = {
+      board: [
+        ["blank", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+    };
+    expect(getTopMessage(boardState)).toEqual("Player X's Turn");
+  });
+  it("returns Player O's Turn when the game has no winner and has open spaces when it is x's turn", () => {
+    const boardState = {
+      board: [
+        ["blank", "o", "x"],
+        ["blank", "o", "blank"],
+        ["blank", "x", "x"],
+      ],
+    };
+    expect(getTopMessage(boardState)).toEqual("Player O's Turn");
+  });
+  it("returns Player O Wins! when the game player O wins", () => {
+    const boardState = {
+      board: [
+        ["blank", "o", "x"],
+        ["blank", "o", "blank"],
+        ["x", "o", "x"],
+      ],
+    };
+    expect(getTopMessage(boardState)).toEqual("Player O Wins!");
   });
 });
 

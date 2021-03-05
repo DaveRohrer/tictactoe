@@ -32,13 +32,9 @@ const boardStates = [clearBoardState()];
 
 const getWinnerFromRows = (rowArray) => {
   return rowArray.reduce((acc, row) => {
-    return row.every((element) => {
-      return element == "x";
-    })
+    return row.every((element) => element == "x")
       ? "x"
-      : row.every((element) => {
-          return element == "o";
-        })
+      : row.every((element) => element == "o")
       ? "o"
       : acc;
   }, "none");
@@ -66,6 +62,14 @@ const getWinner = (boardState) => {
   }, "none");
 };
 
+const isDraw = (boardState) => {
+  return !hasEmptySpaces(boardState) && !hasWinner(boardState);
+};
+
+const hasWinner = (boardState) => {
+  return getWinner(boardState) != "none";
+};
+
 const transformColumnsToRows = (board) => {
   return [
     [board[0][0], board[1][0], board[2][0]],
@@ -79,6 +83,31 @@ const transformDiagnalIndiciesToRows = (board) => {
     [board[0][0], board[1][1], board[2][2]],
     [board[0][2], board[1][1], board[2][0]],
   ];
+};
+
+const getTopMessage = (boardState) => {
+  return hasWinner(boardState)
+    ? `Player ${getWinner(boardState).toUpperCase()} Wins!`
+    : isDraw(boardState)
+    ? `Draw Game!`
+    : `Player ${getTurn(boardState).toUpperCase()}'s Turn`;
+};
+
+const getNumberOfLetters = (boardState, letter) => {
+  return boardState.board.flat(2).includes(letter)
+    ? boardState.board.flat(2).filter((element) => element == letter).length
+    : 0;
+};
+
+const getTurn = (boardState) => {
+  return getNumberOfLetters(boardState, "o") <
+    getNumberOfLetters(boardState, "x")
+    ? "o"
+    : "x";
+};
+
+const hasEmptySpaces = (boardState) => {
+  return getNumberOfLetters(boardState, "blank") > 0;
 };
 
 // const boardState = {
@@ -119,6 +148,16 @@ create new board state (
 // let selectorPosition = {};
 // let selectorTicTimeout;
 // let playersTurn;
+
+// const boardState = {
+//   board: [
+//     ["x", "o", "x"],
+//     ["x", "o", "o"],
+//     ["o", "x", "x"],
+//   ],
+// };
+
+// console.log(getTopMessage(boardState));
 
 // Model init function
 const initializeModel = (presentToView = true) => {
@@ -294,6 +333,10 @@ module.exports = {
   getVerticalWinner,
   getDiagonalWinner,
   getWinner,
+  getTurn,
+  hasEmptySpaces,
+  isDraw,
+  getTopMessage,
   //   // I put the functions I am exporting for testing under this comment until I learn more
   //   // about how to properly handle encapsulation when doing jest testing.
   //   setBoard,
