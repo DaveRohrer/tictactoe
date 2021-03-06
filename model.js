@@ -17,6 +17,17 @@ const deepCopyBoardState = (boardState) => {
   };
 };
 
+const createNewBoardState = (board, selectorPos) => {
+  return {
+    board: [
+      [board[0][0], board[0][1], board[0][2]],
+      [board[1][0], board[1][1], board[1][2]],
+      [board[2][0], board[2][1], board[2][2]],
+    ],
+    selectorPos: { x: selectorPos.x, y: selectorPos.y },
+  };
+};
+
 const clearBoardState = () => {
   return {
     board: [
@@ -110,6 +121,53 @@ const hasEmptySpaces = (boardState) => {
   return getNumberOfLetters(boardState, "blank") > 0;
 };
 
+const moveSelectorRight = (boardState) => {
+  return boardState.selectorPos.x < 2
+    ? createNewBoardState(boardState.board, {
+        x: boardState.selectorPos.x + 1,
+        y: boardState.selectorPos.y,
+      })
+    : boardState;
+};
+const moveSelectorLeft = (boardState) => {
+  return boardState.selectorPos.x > 0
+    ? createNewBoardState(boardState.board, {
+        x: boardState.selectorPos.x - 1,
+        y: boardState.selectorPos.y,
+      })
+    : boardState;
+};
+const moveSelectorUp = (boardState) => {
+  return boardState.selectorPos.y > 0
+    ? createNewBoardState(boardState.board, {
+        x: boardState.selectorPos.x,
+        y: boardState.selectorPos.y - 1,
+      })
+    : boardState;
+};
+const moveSelectorDown = (boardState) => {
+  return boardState.selectorPos.y < 2
+    ? createNewBoardState(boardState.board, {
+        x: boardState.selectorPos.x,
+        y: boardState.selectorPos.y + 1,
+      })
+    : boardState;
+};
+
+const moveSelector = (boardState, direction) => {
+  switch (direction) {
+    case "right":
+      return moveSelectorRight(boardState);
+    case "left":
+      return moveSelectorLeft(boardState);
+    case "up":
+      return moveSelectorUp(boardState);
+    case "down":
+      return moveSelectorDown(boardState);
+    default:
+      break;
+  }
+};
 // const boardState = {
 //   board: [
 //     ["blank", "x", "blank"],
@@ -155,9 +213,10 @@ create new board state (
 //     ["x", "o", "o"],
 //     ["o", "x", "x"],
 //   ],
+//   selectorPos: { x: 0, y: 0 },
 // };
 
-// console.log(getTopMessage(boardState));
+// console.log(moveSelector(boardState, "down"));
 
 // Model init function
 const initializeModel = (presentToView = true) => {
@@ -337,6 +396,9 @@ module.exports = {
   hasEmptySpaces,
   isDraw,
   getTopMessage,
+  moveSelector,
+  deepCopyBoardState,
+  createNewBoardState,
   //   // I put the functions I am exporting for testing under this comment until I learn more
   //   // about how to properly handle encapsulation when doing jest testing.
   //   setBoard,
