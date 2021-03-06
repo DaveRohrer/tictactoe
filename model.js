@@ -4,8 +4,6 @@ const {
   resetSelectorCharacter,
 } = require("./view");
 
-//board state
-
 //TODO: change code to use double map now that you learned it
 const deepCopyBoardState = (boardState) => {
   return {
@@ -66,6 +64,23 @@ const clearBoardState = () => {
 };
 
 const boardStates = [clearBoardState()];
+
+const handleResetRequest = () => {
+  if (
+    !deepCompareBoardStates(
+      boardStates[boardStates.length - 1],
+      clearBoardState()
+    )
+  ) {
+    boardStates.push(clearBoardState());
+  }
+
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    getTopMessage(boardStates[boardStates.length - 1])
+  );
+};
 
 const getWinnerFromRows = (rowArray) => {
   return rowArray.reduce((acc, row) => {
@@ -258,20 +273,7 @@ const handleMoveRequest = (request) => {
 };
 
 // Model init function
-const initializeModel = (presentToView = true) => {
-  // resetBoardState();
-  // resetSelectorPosition();
-  // selectorTicTimeout = setSelectorInterval();
-  // playersTurn = "X";
-  // if (presentToView) {
-  //   updateView(boardState, selectorPosition, topMessage(playersTurn));
-  // }
-  // updateView(
-  //   boardStates[boardStates.length - 1].board,
-  //   boardStates[boardStates.length - 1].selectorPos,
-  //   getTopMessage(boardStates[boardStates.length - 1])
-  // );
-
+const initializeModel = () => {
   updateView(
     boardStates[boardStates.length - 1].board,
     boardStates[boardStates.length - 1].selectorPos,
@@ -300,4 +302,5 @@ module.exports = {
   compareBoards,
   deepCompareBoardStates,
   handlePlacementRequest,
+  handleResetRequest,
 };

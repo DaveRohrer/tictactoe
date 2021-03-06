@@ -1,5 +1,9 @@
 const readline = require("readline");
-const { handleMoveRequest, handlePlacementRequest } = require("./model");
+const {
+  handleMoveRequest,
+  handlePlacementRequest,
+  handleResetRequest,
+} = require("./model");
 
 const initializeController = () => {
   const validMoveKeys = ["right", "left", "up", "down"];
@@ -13,9 +17,8 @@ const initializeController = () => {
       handleMoveRequest(key.name);
     } else if (validLetterPlacingKeys.includes(key.name)) {
       handlePlacementRequest();
-      //      handleRequest(key.name);
     } else if (key.name === "r") {
-      //     resetModel();
+      handleResetRequest();
     }
   });
 };
