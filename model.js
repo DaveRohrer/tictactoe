@@ -91,6 +91,10 @@ const hasWinner = (boardState) => {
   return getWinner(boardState) != "none";
 };
 
+const isGameOver = (boardState) => {
+  return isDraw(boardState) || hasWinner(boardState);
+};
+
 const transformColumnsToRows = (board) => {
   return [
     [board[0][0], board[1][0], board[2][0]],
@@ -187,72 +191,53 @@ const isEmptyAtSelectorLocation = (boardState) => {
 };
 
 const placeLetter = (boardState) => {
-  //check to see if location at selector position is free annd then put the correct letter down
-  // return isEmptyAtSelectorLocation(boardState) ?  :   ;
+  return isEmptyAtSelectorLocation(boardState) && !isGameOver(boardState)
+    ? createNewBoardState(
+        alterBoardAtLocation(
+          boardState.board,
+          boardState.selectorPos.x,
+          boardState.selectorPos.y,
+          getTurn(boardState)
+        ),
+        boardState.selectorPos
+      )
+    : boardState;
 };
 
-// const board = [
-//   ["x", "o", "x"],
-//   ["x", "o", "o"],
-//   ["o", "x", "x"],
-// ];
-// const boardResult = [
-//   ["x", "o", "x"],
-//   ["x", "o", "o"],
-//   ["o", "x", "o"],
-// ];
-
-// console.log(alterBoardAtLocation(board, 2, 2, "o"));
-
-// const boardState = {
-//   board: [
-//     ["blank", "x", "blank"],
-//     ["x", "x", "blank"],
-//     ["o", "o", "o"],
-//   ],
-// };
-// console.log(getWinner(boardState));
-
-//functions
-//isWinner()
-//deepCopyBoardState()
-//getTopMessage
-//newBoardState
-
-//
-//
-
-/*
-create new board state (
-
-  const 
-
- )
-
-*/
-
-// const {
-//   updateView,
-//   updateSelectorCharacterIndex,
-//   resetSelectorCharacter,
-// } = require("./view");
-
-// // Model variables
-// let boardState = [];
-// let selectorPosition = {};
-// let selectorTicTimeout;
-// let playersTurn;
+const handleMoveRequest = (request) => {
+  const newDesiredBoardState = moveSelector(
+    boardStates[boardStates.length - 1],
+    request
+  );
+  boardStates.push(newDesiredBoardState);
+  // }
+  // if (boardStates[boardStates.length - 1] !== newDesiredBoardState) {
+  //   boardStates.push(newDesiredBoardState);
+  // }
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    getTopMessage(boardStates[boardStates.length - 1])
+  );
+};
 
 // const boardState = {
 //   board: [
-//     ["x", "o", "x"],
-//     ["x", "o", "o"],
+//     ["o", "o", "x"],
+//     ["x", "blank", "blank"],
 //     ["o", "x", "x"],
 //   ],
-//   selectorPos: { x: 0, y: 0 },
+//   selectorPos: { x: 1, y: 1 },
 // };
-
-// console.log(moveSelector(boardState, "down"));
+// const resultBoardState = {
+//   board: [
+//     ["o", "o", "x"],
+//     ["x", "o", "blank"],
+//     ["o", "x", "x"],
+//   ],
+//   selectorPos: { x: 1, y: 1 },
+// };
+// console.log(placeLetter(boardState));
 
 // Model init function
 const initializeModel = (presentToView = true) => {
@@ -263,68 +248,17 @@ const initializeModel = (presentToView = true) => {
   // if (presentToView) {
   //   updateView(boardState, selectorPosition, topMessage(playersTurn));
   // }
-  updateView(
-    boardStates[boardStates.length - 1].board,
-    boardStates[boardStates.length - 1].selectorPos,
-    "lets party for real"
-  );
+  // updateView(
+  //   boardStates[boardStates.length - 1].board,
+  //   boardStates[boardStates.length - 1].selectorPos,
+  //   getTopMessage(boardStates[boardStates.length - 1])
+  // );
+
+  console.log(boardStates);
 };
-
-// // Resetting methods
-// const resetModel = () => {
-//   resetBoardState();
-//   resetSelectorPosition();
-//   resetSelectorBlink();
-//   playersTurn = "X";
-//   updateView(boardState, selectorPosition, topMessage(playersTurn));
-// };
-// const resetSelectorPosition = () => {
-//   selectorPosition.x = 0;
-//   selectorPosition.y = 0;
-// };
-// const resetBoardState = () => {
-//   boardState = [
-//     ["blank", "blank", "blank"],
-//     ["blank", "blank", "blank"],
-//     ["blank", "blank", "blank"],
-//   ];
-// };
-// const resetSelectorBlink = () => {
-//   clearInterval(selectorTicTimeout);
-//   selectorTicTimeout = setSelectorInterval();
-//   resetSelectorCharacter();
-// };
-
-// // Timer functions for the selector blinking speed
-// const selectorTic = () => {
-//   updateSelectorCharacterIndex();
-//   updateView(boardState, selectorPosition, topMessage(playersTurn));
-// };
-// const setSelectorInterval = () => {
-//   return setInterval(selectorTic, 700);
-// };
-
-//   resetSelectorBlink();
-//   updateView(boardState, selectorPosition, topMessage(playersTurn));
-// };
-// const placeLetter = (presentToView = true) => {
-//   if (
-//     boardState[selectorPosition.y][selectorPosition.x] === "blank" &&
-//     checkForWinner() === "no winner yet"
-//   ) {
-//     boardState[selectorPosition.y][
-//       selectorPosition.x
-//     ] = playersTurn.toLowerCase();
-//     flipTurn();
-//   }
-//   if (presentToView) {
-//     updateView(boardState, selectorPosition, topMessage(playersTurn));
-//   }
-// };
 
 module.exports = {
   initializeModel,
-  //   placeLetter,
   //   resetModel,
   getHorizontalWinner,
   getVerticalWinner,
@@ -339,11 +273,6 @@ module.exports = {
   createNewBoardState,
   alterBoardAtLocation,
   isEmptyAtSelectorLocation,
-  //   // I put the functions I am exporting for testing under this comment until I learn more
-  //   // about how to properly handle encapsulation when doing jest testing.
-  //   setBoard,
-  //   checkForWinner,
-  //   getBoardState,
-  //   setSelectorPosition,
-  //   placeLetter,
+  placeLetter,
+  handleMoveRequest,
 };

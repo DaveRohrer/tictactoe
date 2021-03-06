@@ -12,6 +12,7 @@ const {
   createNewBoardState,
   alterBoardAtLocation,
   isEmptyAtSelectorLocation,
+  placeLetter,
 } = require("./model");
 
 describe("getHorizontalWinner", () => {
@@ -652,5 +653,37 @@ describe("isEmptyAtSelectorLocation", () => {
       selectorPos: { x: 2, y: 1 },
     };
     expect(isEmptyAtSelectorLocation(boardState)).toEqual(false);
+  });
+});
+describe("placeLetter", () => {
+  it("does not alter the board state when the selector location position is occupied", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "blank", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 2, y: 2 },
+    };
+    expect(placeLetter(boardState)).toEqual(boardState);
+  });
+  it("places the correct letter in the position of the selector when it is not occupied", () => {
+    const boardState = {
+      board: [
+        ["o", "o", "x"],
+        ["x", "blank", "blank"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 1, y: 1 },
+    };
+    const resultBoardState = {
+      board: [
+        ["o", "o", "x"],
+        ["x", "o", "blank"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 1, y: 1 },
+    };
+    expect(placeLetter(boardState)).toEqual(resultBoardState);
   });
 });
