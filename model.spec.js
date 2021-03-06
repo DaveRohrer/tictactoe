@@ -10,6 +10,8 @@ const {
   moveSelector,
   deepCopyBoardState,
   createNewBoardState,
+  alterBoardAtLocation,
+  isEmptyAtSelectorLocation,
 } = require("./model");
 
 describe("getHorizontalWinner", () => {
@@ -611,5 +613,44 @@ describe("moveSelector", () => {
       selectorPos: { x: 0, y: 2 },
     };
     expect(moveSelector(boardState, "left")).toEqual(boardStateResult);
+  });
+});
+describe("alterBoardAtLocation", () => {
+  it("changes an element of a 2d array at an x and y index", () => {
+    const board = [
+      ["x", "o", "x"],
+      ["x", "o", "o"],
+      ["o", "x", "x"],
+    ];
+    const boardResult = [
+      ["x", "o", "x"],
+      ["x", "o", "o"],
+      ["o", "x", "o"],
+    ];
+    expect(alterBoardAtLocation(board, 2, 2, "o")).toEqual(boardResult);
+  });
+});
+describe("isEmptyAtSelectorLocation", () => {
+  it("returns true when a board state has an empty space at its selector location", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "blank", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 1, y: 1 },
+    };
+    expect(isEmptyAtSelectorLocation(boardState)).toEqual(true);
+  });
+  it("returns false when a board state has an occupied space at its selector location", () => {
+    const boardState = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "blank", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 2, y: 1 },
+    };
+    expect(isEmptyAtSelectorLocation(boardState)).toEqual(false);
   });
 });

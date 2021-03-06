@@ -6,6 +6,7 @@ const {
 
 //board state
 
+//TODO: change code to use double map now that you learned it
 const deepCopyBoardState = (boardState) => {
   return {
     board: [
@@ -17,6 +18,7 @@ const deepCopyBoardState = (boardState) => {
   };
 };
 
+//TODO: change code to use double map now that you learned it
 const createNewBoardState = (board, selectorPos) => {
   return {
     board: [
@@ -26,6 +28,14 @@ const createNewBoardState = (board, selectorPos) => {
     ],
     selectorPos: { x: selectorPos.x, y: selectorPos.y },
   };
+};
+
+const alterBoardAtLocation = (board, x, y, value) => {
+  return board.map((row, iIndex) => {
+    return row.map((element, jIndex) => {
+      return iIndex == y && jIndex == x ? value : element;
+    });
+  });
 };
 
 const clearBoardState = () => {
@@ -168,6 +178,32 @@ const moveSelector = (boardState, direction) => {
       break;
   }
 };
+
+const isEmptyAtSelectorLocation = (boardState) => {
+  return (
+    boardState.board[boardState.selectorPos.y][boardState.selectorPos.x] ==
+    "blank"
+  );
+};
+
+const placeLetter = (boardState) => {
+  //check to see if location at selector position is free annd then put the correct letter down
+  // return isEmptyAtSelectorLocation(boardState) ?  :   ;
+};
+
+// const board = [
+//   ["x", "o", "x"],
+//   ["x", "o", "o"],
+//   ["o", "x", "x"],
+// ];
+// const boardResult = [
+//   ["x", "o", "x"],
+//   ["x", "o", "o"],
+//   ["o", "x", "o"],
+// ];
+
+// console.log(alterBoardAtLocation(board, 2, 2, "o"));
+
 // const boardState = {
 //   board: [
 //     ["blank", "x", "blank"],
@@ -268,32 +304,6 @@ const initializeModel = (presentToView = true) => {
 //   return setInterval(selectorTic, 700);
 // };
 
-// // Input handler functions
-// const moveSelector = (desiredDirection) => {
-//   switch (desiredDirection) {
-//     case "right":
-//       if (selectorPosition.x < 2) {
-//         selectorPosition.x++;
-//       }
-//       break;
-//     case "left":
-//       if (selectorPosition.x > 0) {
-//         selectorPosition.x--;
-//       }
-//       break;
-//     case "up":
-//       if (selectorPosition.y > 0) {
-//         selectorPosition.y--;
-//       }
-//       break;
-//     case "down":
-//       if (selectorPosition.y < 2) {
-//         selectorPosition.y++;
-//       }
-//       break;
-//     default:
-//       break;
-//   }
 //   resetSelectorBlink();
 //   updateView(boardState, selectorPosition, topMessage(playersTurn));
 // };
@@ -312,79 +322,7 @@ const initializeModel = (presentToView = true) => {
 //   }
 // };
 
-// //TODO consider changing this code to get the correct player turn just from the number of
-// //xs and os in the array. Could remove that variable from other functions too if we wanted
-// const flipTurn = () => {
-//   if (playersTurn === "X") {
-//     playersTurn = "O";
-//   } else {
-//     playersTurn = "X";
-//   }
-// };
-
-// const hasOpenSpace = () => {
-//   return (
-//     boardState[0].includes("blank") ||
-//     boardState[1].includes("blank") ||
-//     boardState[2].includes("blank")
-//   );
-// };
-
-// //TODO make some smaller functions to call in here
-// const checkForWinner = () => {
-//   for (let i = 0; i < 3; i++) {
-//     if (
-//       boardState[i][0] === boardState[i][1] &&
-//       boardState[i][1] === boardState[i][2] &&
-//       boardState[i][0] !== "blank"
-//     ) {
-//       return boardState[i][0];
-//     } else if (
-//       boardState[0][i] === boardState[1][i] &&
-//       boardState[1][i] === boardState[2][i] &&
-//       boardState[0][i] !== "blank"
-//     ) {
-//       return boardState[0][i];
-//     }
-//   }
-//   if (
-//     ((boardState[0][0] === boardState[1][1] &&
-//       boardState[1][1] === boardState[2][2]) ||
-//       (boardState[2][0] === boardState[1][1] &&
-//         boardState[1][1] === boardState[0][2])) &&
-//     boardState[1][1] !== "blank"
-//   ) {
-//     return boardState[1][1];
-//   }
-//   return hasOpenSpace() ? "no winner yet" : "draw game";
-// };
-
-// // This method returns whatever message should be displayed above the board
-// const topMessage = (playersTurn) => {
-//   switch (checkForWinner()) {
-//     case "no winner yet":
-//       return `Player ${playersTurn}'s Turn`;
-//     case "draw game":
-//       return `Draw Game!`;
-//     default:
-//       return `Player ${checkForWinner().toUpperCase()} Wins!`;
-//   }
-// };
-
-// // Setter/getter functions currently used for testing
-// const setBoard = (desiredBoardState) => {
-//   boardState = desiredBoardState;
-// };
-// const getBoardState = () => {
-//   return boardState;
-// };
-// const setSelectorPosition = (y, x) => {
-//   selectorPosition.y = y;
-//   selectorPosition.x = x;
-// };
-
 module.exports = {
-  //   moveSelector,
   initializeModel,
   //   placeLetter,
   //   resetModel,
@@ -399,6 +337,8 @@ module.exports = {
   moveSelector,
   deepCopyBoardState,
   createNewBoardState,
+  alterBoardAtLocation,
+  isEmptyAtSelectorLocation,
   //   // I put the functions I am exporting for testing under this comment until I learn more
   //   // about how to properly handle encapsulation when doing jest testing.
   //   setBoard,
