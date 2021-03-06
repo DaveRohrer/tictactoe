@@ -220,16 +220,36 @@ const placeLetter = (boardState) => {
     : boardState;
 };
 
+const handlePlacementRequest = () => {
+  const desiredBoardState = placeLetter(boardStates[boardStates.length - 1]);
+  if (
+    !deepCompareBoardStates(
+      boardStates[boardStates.length - 1],
+      desiredBoardState
+    )
+  ) {
+    boardStates.push(desiredBoardState);
+  }
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    getTopMessage(boardStates[boardStates.length - 1])
+  );
+};
+
 const handleMoveRequest = (request) => {
-  const newDesiredBoardState = moveSelector(
+  const desiredBoardState = moveSelector(
     boardStates[boardStates.length - 1],
     request
   );
-  boardStates.push(newDesiredBoardState);
-  // }
-  // if (boardStates[boardStates.length - 1] !== newDesiredBoardState) {
-  //   boardStates.push(newDesiredBoardState);
-  // }
+  if (
+    !deepCompareBoardStates(
+      boardStates[boardStates.length - 1],
+      desiredBoardState
+    )
+  ) {
+    boardStates.push(desiredBoardState);
+  }
   updateView(
     boardStates[boardStates.length - 1].board,
     boardStates[boardStates.length - 1].selectorPos,
@@ -252,7 +272,11 @@ const initializeModel = (presentToView = true) => {
   //   getTopMessage(boardStates[boardStates.length - 1])
   // );
 
-  console.log(boardStates);
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    getTopMessage(boardStates[boardStates.length - 1])
+  );
 };
 
 module.exports = {
@@ -275,4 +299,5 @@ module.exports = {
   handleMoveRequest,
   compareBoards,
   deepCompareBoardStates,
+  handlePlacementRequest,
 };

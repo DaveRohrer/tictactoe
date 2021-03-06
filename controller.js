@@ -1,10 +1,5 @@
 const readline = require("readline");
-const {
-  moveSelector,
-  placeLetter,
-  handleMoveRequest,
-  resetModel,
-} = require("./model");
+const { handleMoveRequest, handlePlacementRequest } = require("./model");
 
 const initializeController = () => {
   const validMoveKeys = ["right", "left", "up", "down"];
@@ -16,9 +11,8 @@ const initializeController = () => {
       process.exit(); //TODO make a proper exit function in model to call here also
     } else if (validMoveKeys.includes(key.name)) {
       handleMoveRequest(key.name);
-      console.log(key.name);
-      //moveSelector(key.name);
     } else if (validLetterPlacingKeys.includes(key.name)) {
+      handlePlacementRequest();
       //      handleRequest(key.name);
     } else if (key.name === "r") {
       //     resetModel();
