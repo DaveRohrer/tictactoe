@@ -13,6 +13,8 @@ const {
   alterBoardAtLocation,
   isEmptyAtSelectorLocation,
   placeLetter,
+  compareBoards,
+  deepCompareBoardStates,
 } = require("./model");
 
 describe("getHorizontalWinner", () => {
@@ -685,5 +687,92 @@ describe("placeLetter", () => {
       selectorPos: { x: 1, y: 1 },
     };
     expect(placeLetter(boardState)).toEqual(resultBoardState);
+  });
+});
+describe("compareBoards", () => {
+  it("returns true when element values of two boards are identical", () => {
+    const boardA = [
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    const boardB = [
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    expect(compareBoards(boardA, boardB)).toEqual(true);
+  });
+  it("returns false when element values of two boards are not identical", () => {
+    const boardA = [
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    const boardB = [
+      ["blank", "blank", "blank"],
+      ["blank", "x", "blank"],
+      ["blank", "blank", "blank"],
+    ];
+    expect(compareBoards(boardA, boardB)).toEqual(false);
+  });
+});
+describe("deepCompareBoardStates", () => {
+  it("returns true when boards have idenditcal element values", () => {
+    const boardStateA = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 0, y: 0 },
+    };
+    const boardStateB = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 0, y: 0 },
+    };
+    expect(deepCompareBoardStates(boardStateA, boardStateB)).toEqual(true);
+  });
+  it("returns false when boards do not have idenditcal board values", () => {
+    const boardStateA = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "blank"],
+      ],
+      selectorPos: { x: 0, y: 0 },
+    };
+    const boardStateB = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 0, y: 0 },
+    };
+    expect(deepCompareBoardStates(boardStateA, boardStateB)).toEqual(false);
+  });
+  it("returns false when boards do not have idenditcal selector positions", () => {
+    const boardStateA = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 0, y: 0 },
+    };
+    const boardStateB = {
+      board: [
+        ["x", "o", "x"],
+        ["x", "o", "o"],
+        ["o", "x", "x"],
+      ],
+      selectorPos: { x: 0, y: 1 },
+    };
+    expect(deepCompareBoardStates(boardStateA, boardStateB)).toEqual(false);
   });
 });

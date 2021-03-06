@@ -18,6 +18,22 @@ const deepCopyBoardState = (boardState) => {
   };
 };
 
+const deepCompareBoardStates = (boardStateA, boardStateB) => {
+  return (
+    compareBoards(boardStateA.board, boardStateB.board) &&
+    compareSelectorPositions(boardStateA.selectorPos, boardStateB.selectorPos)
+  );
+};
+
+const compareBoards = (boardA, boardB) => {
+  return boardA.flat().reduce((acc, element, index) => {
+    return element == boardB.flat()[index] && acc;
+  }, true);
+};
+const compareSelectorPositions = (positionA, positionB) => {
+  return positionA.x == positionB.x && positionA.y == positionB.y;
+};
+
 //TODO: change code to use double map now that you learned it
 const createNewBoardState = (board, selectorPos) => {
   return {
@@ -221,24 +237,6 @@ const handleMoveRequest = (request) => {
   );
 };
 
-// const boardState = {
-//   board: [
-//     ["o", "o", "x"],
-//     ["x", "blank", "blank"],
-//     ["o", "x", "x"],
-//   ],
-//   selectorPos: { x: 1, y: 1 },
-// };
-// const resultBoardState = {
-//   board: [
-//     ["o", "o", "x"],
-//     ["x", "o", "blank"],
-//     ["o", "x", "x"],
-//   ],
-//   selectorPos: { x: 1, y: 1 },
-// };
-// console.log(placeLetter(boardState));
-
 // Model init function
 const initializeModel = (presentToView = true) => {
   // resetBoardState();
@@ -275,4 +273,6 @@ module.exports = {
   isEmptyAtSelectorLocation,
   placeLetter,
   handleMoveRequest,
+  compareBoards,
+  deepCompareBoardStates,
 };
