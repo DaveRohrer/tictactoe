@@ -84,7 +84,7 @@ const insertLetter = (boardStateDisplayString, drawPosition, letter) => {
   return boardPixels.join("");
 };
 
-// TODO make functional where it uses global variable.. pass it in, and also rename function.
+// TODO make functional where it does not use global variable.. pass it in, and also rename function.
 const insertSelectBoarder = (boardStateDisplayString, selectorPosition) => {
   let boardPixels = [...boardStateDisplayString];
   for (let i = 0; i < selectorPixelWidth * selectorPixelHeight; i++) {
@@ -129,14 +129,14 @@ const insertBottomMenu = (boardStateDisplayString) => {
   return boardStateDisplayString.concat(`\n  [R] Restart         [ESC] Quit  `);
 };
 
-// TODO make functional where it alters global variable
+// TODO make functional where it does not alter global variable
 const updateSelectorCharacterIndex = () => {
   selectorCharacterIndex++;
   if (selectorCharacterIndex >= numberOfSelectorChars) {
     resetSelectorCharacter();
   }
 };
-// TODO make functional where it alters global variable
+// TODO make functional where it does not alter global variable
 const resetSelectorCharacter = () => {
   selectorCharacterIndex = 0;
 };
@@ -145,15 +145,7 @@ const resetSelectorCharacter = () => {
 // the necessary letters, selector, and messages. It also clears necessary elements we
 // previously printed to the terminal and overwrites everything else.
 const updateView = (boardState, selectorPosition, topMessage) => {
-  // Put our cursor to the top so we overwrite our board everyframe without
-  // having to clear the console (and cause flickering) Howerver, we do need
-  // to clear the top line message so we dont get artifacts when it changes.
-  // TODO: now that you learned how to use cursor placement to determine where
-  // stuff prints to the screen, you could consider rending the entire board
-  // system using cursor movement rather than successively inserting characters
-  // into a big string.
   readline.cursorTo(process.stdout, 0, 0);
-  //process.stdout.clearLine(0);
   console.log(
     insertBottomMenu(
       insertTopMessage(
@@ -167,24 +159,9 @@ const updateView = (boardState, selectorPosition, topMessage) => {
   );
 };
 
-// const currBoard = [
-//   ["x", "blank", "o"],
-//   ["blank", "x", "blank"],
-//   ["o", "o", "x"],
-// ];
-
-// updateView(currBoard, { x: 2, y: 2 }, "party time");
-
-// Functions below this line are used for testing
-// const setSelectorCharacterIndex = (index) => {
-//   selectorCharacterIndex = index;
-// };
-
 module.exports = {
   updateView,
   updateSelectorCharacterIndex,
   resetSelectorCharacter,
   initializeView,
-  // I put the functions I am exporting for testing under this comment until I learn more
-  // about how to properly handle encapsulation when doing jest testing.
 };

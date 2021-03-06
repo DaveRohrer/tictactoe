@@ -4,14 +4,9 @@ const {
   resetSelectorCharacter,
 } = require("./view");
 
-//TODO: change code to use double map now that you learned it
 const deepCopyBoardState = (boardState) => {
   return {
-    board: [
-      [boardState.board[0][0], boardState.board[0][1], boardState.board[0][2]],
-      [boardState.board[1][0], boardState.board[1][1], boardState.board[1][2]],
-      [boardState.board[2][0], boardState.board[2][1], boardState.board[2][2]],
-    ],
+    board: boardState.board.map((row) => row.map((element) => element)),
     selectorPos: { x: boardState.selectorPos.x, y: boardState.selectorPos.y },
   };
 };
@@ -32,14 +27,9 @@ const compareSelectorPositions = (positionA, positionB) => {
   return positionA.x == positionB.x && positionA.y == positionB.y;
 };
 
-//TODO: change code to use double map now that you learned it
 const createNewBoardState = (board, selectorPos) => {
   return {
-    board: [
-      [board[0][0], board[0][1], board[0][2]],
-      [board[1][0], board[1][1], board[1][2]],
-      [board[2][0], board[2][1], board[2][2]],
-    ],
+    board: board.map((row) => row.map((element) => element)),
     selectorPos: { x: selectorPos.x, y: selectorPos.y },
   };
 };
@@ -63,6 +53,7 @@ const clearBoardState = () => {
   };
 };
 
+let selectorTicInterval;
 const boardStates = [clearBoardState()];
 
 const handleResetRequest = () => {
@@ -72,6 +63,7 @@ const handleResetRequest = () => {
       clearBoardState()
     )
   ) {
+    resetSelectorBlink();
     boardStates.push(clearBoardState());
   }
 
@@ -150,8 +142,8 @@ const getTopMessage = (boardState) => {
 };
 
 const getNumberOfLetters = (boardState, letter) => {
-  return boardState.board.flat(2).includes(letter)
-    ? boardState.board.flat(2).filter((element) => element == letter).length
+  return boardState.board.flat().includes(letter)
+    ? boardState.board.flat().filter((element) => element == letter).length
     : 0;
 };
 
@@ -243,6 +235,7 @@ const handlePlacementRequest = () => {
       desiredBoardState
     )
   ) {
+    resetSelectorBlink();
     boardStates.push(desiredBoardState);
   }
   updateView(
@@ -264,6 +257,7 @@ const handleMoveRequest = (request) => {
     )
   ) {
     boardStates.push(desiredBoardState);
+    resetSelectorBlink();
   }
   updateView(
     boardStates[boardStates.length - 1].board,
@@ -274,6 +268,7 @@ const handleMoveRequest = (request) => {
 
 // Model init function
 const initializeModel = () => {
+  resetSelectorBlink();
   updateView(
     boardStates[boardStates.length - 1].board,
     boardStates[boardStates.length - 1].selectorPos,
@@ -281,9 +276,28 @@ const initializeModel = () => {
   );
 };
 
+// Reset the cursor style blinking of the selector location after a move or placement
+const resetSelectorBlink = () => {
+  clearInterval(selectorTicInterval);
+  selectorTicInterval = setSelectorInterval();
+  resetSelectorCharacter();
+};
+
+// Timer functions for the selector blinking speed
+const selectorTic = () => {
+  updateSelectorCharacterIndex();
+  updateView(
+    boardStates[boardStates.length - 1].board,
+    boardStates[boardStates.length - 1].selectorPos,
+    getTopMessage(boardStates[boardStates.length - 1])
+  );
+};
+const setSelectorInterval = () => {
+  return setInterval(selectorTic, 700);
+};
+
 module.exports = {
   initializeModel,
-  //   resetModel,
   getHorizontalWinner,
   getVerticalWinner,
   getDiagonalWinner,
